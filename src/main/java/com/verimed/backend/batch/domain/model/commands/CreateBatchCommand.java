@@ -10,7 +10,7 @@ public record CreateBatchCommand(
         UUID code,
         String hash,
         LocalDateTime createdAt,
-        List<Product>products,
+        List<CreateProductCommand>products,
         String certificateUrl
 ) {
     public CreateBatchCommand {

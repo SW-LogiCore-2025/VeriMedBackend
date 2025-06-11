@@ -8,5 +8,5 @@ import java.util.Optional;
 
 public interface ProductCommandService {
     Optional<Product> handle(CreateProductCommand createProductCommand);
-    Optional<Product> handle(DeleteProductCommand deleteProductCommand);
+    void handle(DeleteProductCommand deleteProductCommand);
 }

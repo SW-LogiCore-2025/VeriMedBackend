@@ -1,6 +1,7 @@
 package com.verimed.backend.batch.domain.model.entities;
 
 import com.verimed.backend.batch.domain.model.aggregates.Product;
+import com.verimed.backend.batch.domain.model.commands.CreateBatchCommand;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -33,4 +34,14 @@ public class Batch {
 
     @Column(name = "certificateUrl")
     private String certificateUrl;
+
+    public Batch(CreateBatchCommand command) {
+        this.code = UUID.randomUUID();
+        this.hash = command.hash();
+        this.createdAt = LocalDateTime.now();
+        this.certificateUrl = command.certificateUrl();
+        this.products = command.products().stream()
+                .map(productCommand -> new Product(productCommand, this))
+                .toList();
+    }
 }

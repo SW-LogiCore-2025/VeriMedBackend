@@ -1,6 +1,7 @@
 package com.verimed.backend.batch.domain.model.aggregates;
 
 
+import com.verimed.backend.batch.domain.model.commands.CreateProductCommand;
 import com.verimed.backend.batch.domain.model.entities.Batch;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -24,6 +25,17 @@ public class Product {
     private String manufacturer;
 
     @ManyToOne
-    @Column(name = "batch_id")
+    @JoinColumn(name = "batch_id")
     private Batch batch;
+
+    public Product(CreateProductCommand command, Batch batch) {
+        this.name = command.name();
+        this.manufacturer = command.manufacturer();
+        this.batch = batch;
+    }
+
+    public Product(CreateProductCommand command) {
+        this.name = command.name();
+        this.manufacturer = command.manufacturer();
+    }
 }
