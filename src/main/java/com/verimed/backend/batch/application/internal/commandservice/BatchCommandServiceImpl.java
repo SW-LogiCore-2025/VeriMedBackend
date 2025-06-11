@@ -4,9 +4,11 @@ import com.verimed.backend.batch.domain.model.commands.CreateBatchCommand;
 import com.verimed.backend.batch.domain.model.entities.Batch;
 import com.verimed.backend.batch.domain.service.BatchCommandService;
 import com.verimed.backend.batch.infrastructure.persistence.jpa.repository.BatchRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Service
 public class BatchCommandServiceImpl implements BatchCommandService {
     private final BatchRepository batchRepository;
     public BatchCommandServiceImpl(BatchRepository batchRepository) {

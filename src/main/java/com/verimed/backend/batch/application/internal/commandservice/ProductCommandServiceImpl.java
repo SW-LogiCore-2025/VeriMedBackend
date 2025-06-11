@@ -5,9 +5,11 @@ import com.verimed.backend.batch.domain.model.commands.CreateProductCommand;
 import com.verimed.backend.batch.domain.model.commands.DeleteProductCommand;
 import com.verimed.backend.batch.domain.service.ProductCommandService;
 import com.verimed.backend.batch.infrastructure.persistence.jpa.repository.ProductRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Service
 public class ProductCommandServiceImpl implements ProductCommandService {
     private final ProductRepository productRepository;
     public ProductCommandServiceImpl(ProductRepository productRepository) {

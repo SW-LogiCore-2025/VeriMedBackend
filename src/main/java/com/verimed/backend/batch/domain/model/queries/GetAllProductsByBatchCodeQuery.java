@@ -1,4 +1,4 @@
 package com.verimed.backend.batch.domain.model.queries;
 
-public record GetAllProductsQuery() {
+public record GetAllProductsByBatchCodeQuery() {
 }

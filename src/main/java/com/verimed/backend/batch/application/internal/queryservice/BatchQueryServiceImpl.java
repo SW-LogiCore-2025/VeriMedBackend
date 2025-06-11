@@ -5,10 +5,12 @@ import com.verimed.backend.batch.domain.model.queries.GetAllBatchesQuery;
 import com.verimed.backend.batch.domain.model.queries.GetBatchByIdQuery;
 import com.verimed.backend.batch.domain.service.BatchQueryService;
 import com.verimed.backend.batch.infrastructure.persistence.jpa.repository.BatchRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class BatchQueryServiceImpl implements BatchQueryService {
     private final BatchRepository batchRepository;
     public BatchQueryServiceImpl(BatchRepository batchRepository) {
