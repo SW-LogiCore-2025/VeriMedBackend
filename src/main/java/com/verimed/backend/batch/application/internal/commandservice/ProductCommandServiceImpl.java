@@ -29,9 +29,10 @@ public class ProductCommandServiceImpl implements ProductCommandService {
 
     @Override
     public void handle(DeleteProductCommand command){
-       var serialNumber = command.serialNumber();
-         if (!productRepository.existsBySerialNumber(serialNumber)) {
-              throw new IllegalArgumentException("Product with serial number " + serialNumber + " does not exist.");
+       var id = command.id();
+         if (!productRepository.existsById(id)) {
+              throw new IllegalArgumentException("Product with serial number " + id + " does not exist.");
          }
+         productRepository.deleteById(id);
     }
 }

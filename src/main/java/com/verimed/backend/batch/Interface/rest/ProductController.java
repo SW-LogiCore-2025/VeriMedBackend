@@ -7,7 +7,6 @@ import com.verimed.backend.batch.Interface.rest.transform.ProductResourceFromEnt
 import com.verimed.backend.batch.domain.model.aggregates.Product;
 import com.verimed.backend.batch.domain.model.commands.DeleteProductCommand;
 import com.verimed.backend.batch.domain.model.queries.GetAllProductsQuery;
-import com.verimed.backend.batch.domain.model.queries.GetProductBySerialNumberQuery;
 import com.verimed.backend.batch.domain.service.ProductCommandService;
 import com.verimed.backend.batch.domain.service.ProductQueryService;
 import org.springframework.http.HttpStatus;
@@ -17,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @RestController
 @RequestMapping(value = "api/v1/product", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -47,16 +45,15 @@ public class ProductController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 
-    @DeleteMapping("/{serialNumber}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable Long serialNumber) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
         try {
-            productCommandService.handle(new DeleteProductCommand(serialNumber));
+            productCommandService.handle(new DeleteProductCommand(id));
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
 
     /*@GetMapping("/batch/{batchCode}")
     public ResponseEntity<List<ProductResource>> getAllProductsByBatchCode(@PathVariable UUID batchCode) {
@@ -67,13 +64,4 @@ public class ProductController {
                 .toList();
         return ResponseEntity.ok(productResources);
     }*/
-
-    @GetMapping("/{serialNumber}")
-    public ResponseEntity<ProductResource> getProductBySerialNumber(@PathVariable Long serialNumber) {
-        Optional<Product> productSource = productQueryService.handle(new GetProductBySerialNumberQuery(serialNumber));
-        return productSource.map(s -> ResponseEntity
-                        .ok(ProductResourceFromEntityAssembler
-                                .toResourceFromEntity(s)))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
 }

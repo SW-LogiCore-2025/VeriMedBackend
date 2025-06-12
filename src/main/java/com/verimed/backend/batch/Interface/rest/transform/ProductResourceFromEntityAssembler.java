@@ -7,6 +7,7 @@ public class ProductResourceFromEntityAssembler {
     public static ProductResource toResourceFromEntity(Product product) {
         String formattedSerial = String.format("%05d", product.getSerialNumber());
         return new ProductResource(
+            product.getId(),
             formattedSerial,
             product.getName(),
             product.getManufacturer()

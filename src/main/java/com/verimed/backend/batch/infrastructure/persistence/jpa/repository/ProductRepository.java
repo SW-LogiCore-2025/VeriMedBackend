@@ -8,9 +8,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
-    boolean existsBySerialNumber(Long serialNumber);
     List<Product> findAllBySerialNumberIn(List<Long> serialNumbers);
-
     @Query("SELECT MAX(p.serialNumber) FROM Product p WHERE p.name = :name AND p.manufacturer = :manufacturer")
     Integer findMaxSerialNumberByNameAndManufacturer(@Param("name") String name, @Param("manufacturer") String manufacturer);
 }
