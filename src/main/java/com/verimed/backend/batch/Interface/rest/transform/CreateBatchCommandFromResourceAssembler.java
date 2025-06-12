@@ -6,9 +6,7 @@ import com.verimed.backend.batch.domain.model.commands.CreateBatchCommand;
 public class CreateBatchCommandFromResourceAssembler {
     public static CreateBatchCommand toCommand(CreateBatchResource command) {
         return new CreateBatchCommand(
-                command.code(),
                 command.hash(),
-                command.createdAt(),
                 command.products(),
                 command.certificateUrl()
         );
