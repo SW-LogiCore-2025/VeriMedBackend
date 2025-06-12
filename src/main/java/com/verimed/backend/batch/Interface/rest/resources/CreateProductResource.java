@@ -1,6 +1,9 @@
 package com.verimed.backend.batch.Interface.rest.resources;
 
+import java.util.UUID;
+
 public record CreateProductResource(
+        UUID serialNumber,
         String name,
         String manufacturer,
         String batch

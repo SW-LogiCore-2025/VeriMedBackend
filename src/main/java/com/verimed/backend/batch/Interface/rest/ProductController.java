@@ -1,7 +1,9 @@
-package com.verimed.backend.batch.Interface.rest.transform;
+package com.verimed.backend.batch.Interface.rest;
 
 import com.verimed.backend.batch.Interface.rest.resources.CreateProductResource;
 import com.verimed.backend.batch.Interface.rest.resources.ProductResource;
+import com.verimed.backend.batch.Interface.rest.transform.CreateProductCommandFromResourceAssembler;
+import com.verimed.backend.batch.Interface.rest.transform.ProductResourceFromEntityAssembler;
 import com.verimed.backend.batch.domain.model.aggregates.Product;
 import com.verimed.backend.batch.domain.model.commands.DeleteProductCommand;
 import com.verimed.backend.batch.domain.model.queries.GetAllProductsByBatchCodeQuery;

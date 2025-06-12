@@ -8,7 +8,7 @@ public class ProductResourceFromEntityAssembler {
         return new ProductResource(
             product.getName(),
             product.getManufacturer(),
-            product.getBatch()
+            product.getBatchCode()
         );
     }
 }

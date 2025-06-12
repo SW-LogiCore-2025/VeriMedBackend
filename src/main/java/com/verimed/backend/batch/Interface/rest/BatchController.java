@@ -4,11 +4,13 @@ import com.verimed.backend.batch.Interface.rest.resources.BatchResource;
 import com.verimed.backend.batch.Interface.rest.resources.CreateBatchResource;
 import com.verimed.backend.batch.Interface.rest.transform.BatchResourceFromEntityAssembler;
 import com.verimed.backend.batch.Interface.rest.transform.CreateBatchCommandFromResourceAssembler;
+import com.verimed.backend.batch.domain.model.aggregates.Product;
 import com.verimed.backend.batch.domain.model.entities.Batch;
 import com.verimed.backend.batch.domain.model.queries.GetAllBatchesQuery;
 import com.verimed.backend.batch.domain.model.queries.GetBatchByIdQuery;
 import com.verimed.backend.batch.domain.service.BatchCommandService;
 import com.verimed.backend.batch.domain.service.BatchQueryService;
+import com.verimed.backend.batch.infrastructure.persistence.jpa.repository.ProductRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,17 +24,22 @@ import java.util.Optional;
 public class BatchController {
     private final BatchCommandService batchCommandService;
     private final BatchQueryService batchQueryService;
-    public BatchController(BatchCommandService batchCommandService, BatchQueryService batchQueryService) {
+    private final ProductRepository productRepository;
+
+    public BatchController(BatchCommandService batchCommandService, BatchQueryService batchQueryService, ProductRepository productRepository) {
         this.batchCommandService = batchCommandService;
         this.batchQueryService = batchQueryService;
+        this.productRepository = productRepository;
     }
 
     @PostMapping
     public ResponseEntity<BatchResource> createBatch(@RequestBody CreateBatchResource createBatchResource) {
         Optional<Batch> batchSource = batchCommandService.handle(CreateBatchCommandFromResourceAssembler.toCommand(createBatchResource));
-        return batchSource.map(s -> new ResponseEntity<>(BatchResourceFromEntityAssembler
-                        .toResourceFromEntity(s), HttpStatus.CREATED))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
+        return batchSource.map(s -> {
+          List<Product> productSource = productRepository.findAllByBatchCode(s.getCode());
+          return new ResponseEntity<>(BatchResourceFromEntityAssembler
+                  .toResourceFromEntity(s, productSource), HttpStatus.CREATED);
+        }).orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 
     @GetMapping
@@ -40,7 +47,10 @@ public class BatchController {
         List<Batch> batchSource = batchQueryService.handle(new GetAllBatchesQuery());
         var batchResources = batchSource
                 .stream()
-                .map(BatchResourceFromEntityAssembler::toResourceFromEntity)
+                .map(batch -> {
+                    List<Product> productSource = productRepository.findAllByBatchCode(batch.getCode());
+                    return BatchResourceFromEntityAssembler.toResourceFromEntity(batch, productSource);
+                })
                 .toList();
         return ResponseEntity.ok(batchResources);
     }
@@ -48,9 +58,10 @@ public class BatchController {
     @GetMapping("/{id}")
     public ResponseEntity<BatchResource> getBatchById(@PathVariable Long id) {
         Optional<Batch> batchSource = batchQueryService.handle(new GetBatchByIdQuery(id));
-        return batchSource.map(s -> ResponseEntity
-                        .ok(BatchResourceFromEntityAssembler
-                        .toResourceFromEntity(s)))
+        return batchSource.map(s -> {
+                    List<Product> products = productRepository.findAllByBatchCode(s.getCode());
+                    return ResponseEntity.ok(BatchResourceFromEntityAssembler.toResourceFromEntity(s, products));
+                })
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 }

@@ -1,8 +1,10 @@
 package com.verimed.backend.batch.Interface.rest.resources;
 
+import java.util.UUID;
+
 public record ProductResource (
         String name,
         String manufacturer,
-        com.verimed.backend.batch.domain.model.entities.Batch batch
+        UUID batchCode
 ){
 }

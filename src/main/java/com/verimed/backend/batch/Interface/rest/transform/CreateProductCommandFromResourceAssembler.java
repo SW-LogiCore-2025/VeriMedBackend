@@ -6,6 +6,7 @@ import com.verimed.backend.batch.domain.model.commands.CreateProductCommand;
 public class CreateProductCommandFromResourceAssembler {
     public static CreateProductCommand toCommand(CreateProductResource command) {
         return new CreateProductCommand(
+                command.serialNumber(),
                 command.name(),
                 command.manufacturer(),
                 command.batch()

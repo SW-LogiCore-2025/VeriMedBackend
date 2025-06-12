@@ -29,9 +29,6 @@ public class Batch {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
-    @OneToMany(mappedBy = "batch", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Product> products;
-
     @Column(name = "certificateUrl")
     private String certificateUrl;
 
@@ -40,8 +37,5 @@ public class Batch {
         this.hash = command.hash();
         this.createdAt = LocalDateTime.now();
         this.certificateUrl = command.certificateUrl();
-        this.products = command.products().stream()
-                .map(productCommand -> new Product(productCommand, this))
-                .toList();
     }
 }

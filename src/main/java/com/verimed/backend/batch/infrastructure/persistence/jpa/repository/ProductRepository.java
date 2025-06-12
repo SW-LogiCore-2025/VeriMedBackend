@@ -10,5 +10,6 @@ import java.util.UUID;
 public interface ProductRepository extends JpaRepository<Product, Long> {
     boolean existsById(Long id);
     boolean existsByBatchCode(UUID batchCode);
-    List<Product> findByBatch(Batch batch);
+    List<Product> findAllByBatchCode(UUID batchCode);
+    List<Product> findAllBySerialNumberIn(List<UUID> serialNumbers);
 }

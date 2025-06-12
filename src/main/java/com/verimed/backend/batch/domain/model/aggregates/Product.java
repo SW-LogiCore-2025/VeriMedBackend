@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,24 +20,26 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name="serial_number", nullable = false, unique = true)
+    private UUID serialNumber;
+
     @Column(name = "name", nullable = false, length = 100)
     private String name;
 
     @Column(name = "manufacturer", nullable = false, length = 100)
     private String manufacturer;
 
-    @ManyToOne
-    @JoinColumn(name = "batch_id")
-    private Batch batch;
-
-    public Product(CreateProductCommand command, Batch batch) {
-        this.name = command.name();
-        this.manufacturer = command.manufacturer();
-        this.batch = batch;
-    }
+    @JoinColumn(name = "batch_code")
+    private UUID batchCode;
 
     public Product(CreateProductCommand command) {
+        this.serialNumber = UUID.randomUUID();
         this.name = command.name();
         this.manufacturer = command.manufacturer();
+        this.batchCode = null;
+    }
+
+    public void assignBatch(UUID batchCode) {
+        this.batchCode = batchCode;
     }
 }

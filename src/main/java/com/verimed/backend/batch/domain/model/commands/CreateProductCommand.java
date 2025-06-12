@@ -1,6 +1,9 @@
 package com.verimed.backend.batch.domain.model.commands;
 
+import java.util.UUID;
+
 public record CreateProductCommand(
+        UUID serialNumber,
         String name,
         String manufacturer,
         String batch
