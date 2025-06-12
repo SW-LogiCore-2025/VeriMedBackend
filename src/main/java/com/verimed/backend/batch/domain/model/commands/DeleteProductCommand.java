@@ -1,9 +1,10 @@
 package com.verimed.backend.batch.domain.model.commands;
 
-public record DeleteProductCommand(Long id){
+
+public record DeleteProductCommand(Long serialNumber){
     public DeleteProductCommand {
-        if (id == null || id <= 0) {
-            throw new IllegalArgumentException("Product ID is not valid");
+        if (serialNumber == null) {
+            throw new IllegalArgumentException("Product serialNumber is not valid");
         }
     }
 }

@@ -18,18 +18,20 @@ public class ProductCommandServiceImpl implements ProductCommandService {
 
     @Override
     public Optional<Product> handle(CreateProductCommand command) {
-        var product = new Product(command);
+        Integer maxSerial = productRepository.findMaxSerialNumberByNameAndManufacturer(
+                command.name(), command.manufacturer()
+        );
+        Long nextSerial = (maxSerial == null) ? 1L : maxSerial + 1L;
+        var product = new Product(command.name(), command.manufacturer(), nextSerial);
         var createdProduct = productRepository.save(product);
         return Optional.of(createdProduct);
     }
 
     @Override
     public void handle(DeleteProductCommand command){
-        if(!productRepository.existsById(command.id())) throw new IllegalArgumentException("Product not found");
-        try {
-            productRepository.deleteById(command.id());
-        } catch (Exception e) {
-            throw new IllegalArgumentException("Error deleting product");
-        }
+       var serialNumber = command.serialNumber();
+         if (!productRepository.existsBySerialNumber(serialNumber)) {
+              throw new IllegalArgumentException("Product with serial number " + serialNumber + " does not exist.");
+         }
     }
 }

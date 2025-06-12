@@ -3,13 +3,11 @@ package com.verimed.backend.batch.Interface.rest.resources;
 import java.util.UUID;
 
 public record CreateProductResource(
-        UUID serialNumber,
         String name,
-        String manufacturer,
-        String batch
-) {
+        String manufacturer
+        ) {
     public CreateProductResource {
-        if (name == null || manufacturer == null || batch == null) {
+        if (name == null || manufacturer == null) {
             throw new IllegalArgumentException("All fields must be provided");
         }
         if (name.isEmpty()) {
@@ -17,9 +15,6 @@ public record CreateProductResource(
         }
         if (manufacturer.isEmpty()) {
             throw new IllegalArgumentException("Manufacturer cannot be empty");
-        }
-        if (batch.isEmpty()) {
-            throw new IllegalArgumentException("Batch cannot be empty");
         }
     }
 }

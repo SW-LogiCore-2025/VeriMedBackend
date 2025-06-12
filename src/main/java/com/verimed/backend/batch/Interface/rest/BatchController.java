@@ -3,7 +3,6 @@ package com.verimed.backend.batch.Interface.rest;
 import com.verimed.backend.batch.Interface.rest.resources.BatchResource;
 import com.verimed.backend.batch.Interface.rest.resources.CreateBatchResource;
 import com.verimed.backend.batch.Interface.rest.transform.BatchResourceFromEntityAssembler;
-import com.verimed.backend.batch.Interface.rest.transform.CreateBatchCommandFromResourceAssembler;
 import com.verimed.backend.batch.domain.model.aggregates.Product;
 import com.verimed.backend.batch.domain.model.entities.Batch;
 import com.verimed.backend.batch.domain.model.queries.GetAllBatchesQuery;
@@ -22,6 +21,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping(value = "api/v1/batch", produces = MediaType.APPLICATION_JSON_VALUE)
 public class BatchController {
+    /*
     private final BatchCommandService batchCommandService;
     private final BatchQueryService batchQueryService;
     private final ProductRepository productRepository;
@@ -63,5 +63,5 @@ public class BatchController {
                     return ResponseEntity.ok(BatchResourceFromEntityAssembler.toResourceFromEntity(s, products));
                 })
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
+    }*/
 }

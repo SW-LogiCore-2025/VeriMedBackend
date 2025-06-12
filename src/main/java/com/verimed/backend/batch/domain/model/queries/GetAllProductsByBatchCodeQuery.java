@@ -1,4 +1,6 @@
 package com.verimed.backend.batch.domain.model.queries;
 
-public record GetAllProductsByBatchCodeQuery() {
+import java.util.UUID;
+
+public record GetAllProductsByBatchCodeQuery(UUID batchId) {
 }

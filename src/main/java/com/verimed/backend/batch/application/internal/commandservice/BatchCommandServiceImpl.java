@@ -25,7 +25,6 @@ public class BatchCommandServiceImpl implements BatchCommandService {
         if (products.size() != command.productSerialNumbers().size()) {
             throw new IllegalArgumentException("Algunos productos no existen");
         }
-        products.forEach(product -> product.assignBatch(batch.getCode()));
         productRepository.saveAll(products);
         var createdBatch = batchRepository.save(batch);
         return Optional.of(createdBatch);

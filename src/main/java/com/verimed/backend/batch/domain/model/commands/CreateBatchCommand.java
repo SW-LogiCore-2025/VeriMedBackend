@@ -5,7 +5,7 @@ import java.util.UUID;
 
 public record CreateBatchCommand(
         String hash,
-        List<UUID>productSerialNumbers,
+        List<Long>productSerialNumbers,
         String certificateUrl
 ) {
     public CreateBatchCommand {

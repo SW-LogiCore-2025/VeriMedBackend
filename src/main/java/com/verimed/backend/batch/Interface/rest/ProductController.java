@@ -6,8 +6,8 @@ import com.verimed.backend.batch.Interface.rest.transform.CreateProductCommandFr
 import com.verimed.backend.batch.Interface.rest.transform.ProductResourceFromEntityAssembler;
 import com.verimed.backend.batch.domain.model.aggregates.Product;
 import com.verimed.backend.batch.domain.model.commands.DeleteProductCommand;
-import com.verimed.backend.batch.domain.model.queries.GetAllProductsByBatchCodeQuery;
-import com.verimed.backend.batch.domain.model.queries.GetProductByIdQuery;
+import com.verimed.backend.batch.domain.model.queries.GetAllProductsQuery;
+import com.verimed.backend.batch.domain.model.queries.GetProductBySerialNumberQuery;
 import com.verimed.backend.batch.domain.service.ProductCommandService;
 import com.verimed.backend.batch.domain.service.ProductQueryService;
 import org.springframework.http.HttpStatus;
@@ -29,6 +29,16 @@ public class ProductController {
         this.productQueryService = productQueryService;
     }
 
+    @GetMapping
+    public ResponseEntity<ProductResource> getAllProducts() {
+        List<Product> productSource = productQueryService.handle(new GetAllProductsQuery());
+        var productResources = productSource
+                .stream()
+                .map(ProductResourceFromEntityAssembler::toResourceFromEntity)
+                .toList();
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+    }
+
     @PostMapping
     public ResponseEntity<ProductResource> createProduct(@RequestBody CreateProductResource createProductResource) {
         Optional<Product> productSource = productCommandService.handle(CreateProductCommandFromResourceAssembler.toCommand(createProductResource));
@@ -37,17 +47,18 @@ public class ProductController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable Long id) {
+    @DeleteMapping("/{serialNumber}")
+    public ResponseEntity<Void> deleteProduct(@PathVariable Long serialNumber) {
         try {
-            productCommandService.handle(new DeleteProductCommand(id));
+            productCommandService.handle(new DeleteProductCommand(serialNumber));
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
-    @GetMapping("/batch/{batchCode}")
+
+    /*@GetMapping("/batch/{batchCode}")
     public ResponseEntity<List<ProductResource>> getAllProductsByBatchCode(@PathVariable UUID batchCode) {
         List<Product> productSource = productQueryService.handle(new GetAllProductsByBatchCodeQuery());
         var productResources = productSource
@@ -55,11 +66,11 @@ public class ProductController {
                 .map(ProductResourceFromEntityAssembler::toResourceFromEntity)
                 .toList();
         return ResponseEntity.ok(productResources);
-    }
+    }*/
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ProductResource> getProductById(@PathVariable Long id) {
-        Optional<Product> productSource = productQueryService.handle(new GetProductByIdQuery(id));
+    @GetMapping("/{serialNumber}")
+    public ResponseEntity<ProductResource> getProductBySerialNumber(@PathVariable Long serialNumber) {
+        Optional<Product> productSource = productQueryService.handle(new GetProductBySerialNumberQuery(serialNumber));
         return productSource.map(s -> ResponseEntity
                         .ok(ProductResourceFromEntityAssembler
                                 .toResourceFromEntity(s)))

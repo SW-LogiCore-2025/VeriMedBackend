@@ -20,8 +20,8 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name="serial_number", nullable = false, unique = true)
-    private UUID serialNumber;
+    @Column(name="serial_number", nullable = false)
+    private Long serialNumber;
 
     @Column(name = "name", nullable = false, length = 100)
     private String name;
@@ -29,17 +29,14 @@ public class Product {
     @Column(name = "manufacturer", nullable = false, length = 100)
     private String manufacturer;
 
-    @JoinColumn(name = "batch_code")
-    private UUID batchCode;
-
     public Product(CreateProductCommand command) {
-        this.serialNumber = UUID.randomUUID();
         this.name = command.name();
         this.manufacturer = command.manufacturer();
-        this.batchCode = null;
     }
 
-    public void assignBatch(UUID batchCode) {
-        this.batchCode = batchCode;
+    public Product(String name, String manufacturer, Long serialNumber) {
+        this.name = name;
+        this.manufacturer = manufacturer;
+        this.serialNumber = serialNumber;
     }
 }
