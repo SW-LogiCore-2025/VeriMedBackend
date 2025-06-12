@@ -1,13 +1,14 @@
 package com.verimed.backend.batch.Interface.rest.transform;
 
-import com.verimed.backend.batch.Interface.rest.resources.CreateProductResource;
-import com.verimed.backend.batch.domain.model.commands.CreateProductCommand;
+
+import com.verimed.backend.batch.domain.model.commands.AddProductToBatchCommand;
 
 public class CreateProductCommandFromResourceAssembler {
-    public static CreateProductCommand toCommand(CreateProductResource command) {
-        return new CreateProductCommand(
-                command.name(),
-                command.manufacturer()
+    public static AddProductToBatchCommand toCommand(AddProductToBatchCommand resource) {
+        return new AddProductToBatchCommand(
+                resource.batchCode(),
+                resource.productTypeId(),
+                resource.quantity()
         );
     }
 }

@@ -5,10 +5,10 @@ import java.util.List;
 import java.util.UUID;
 
 public record BatchResource(
-        UUID code,
+        String code,
         String hash,
         LocalDateTime createdAt,
-        List<com.verimed.backend.batch.domain.model.aggregates.Product> products,
+        List<ProductResource> products,
         String certificateUrl
 ) {
 }

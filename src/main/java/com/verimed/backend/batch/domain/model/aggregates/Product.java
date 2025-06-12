@@ -1,14 +1,11 @@
 package com.verimed.backend.batch.domain.model.aggregates;
 
 
-import com.verimed.backend.batch.domain.model.commands.CreateProductCommand;
 import com.verimed.backend.batch.domain.model.entities.Batch;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.UUID;
 
 @Data
 @AllArgsConstructor
@@ -23,20 +20,11 @@ public class Product {
     @Column(name="serial_number", nullable = false)
     private Long serialNumber;
 
-    @Column(name = "name", nullable = false, length = 100)
-    private String name;
+    @ManyToOne
+    @JoinColumn(name = "batch_code", referencedColumnName = "code", nullable = false)
+    private Batch batch;
 
-    @Column(name = "manufacturer", nullable = false, length = 100)
-    private String manufacturer;
-
-    public Product(CreateProductCommand command) {
-        this.name = command.name();
-        this.manufacturer = command.manufacturer();
-    }
-
-    public Product(String name, String manufacturer, Long serialNumber) {
-        this.name = name;
-        this.manufacturer = manufacturer;
-        this.serialNumber = serialNumber;
-    }
+    @ManyToOne
+    @JoinColumn(name = "product_type_id", nullable = false)
+    private ProductType productType;
 }

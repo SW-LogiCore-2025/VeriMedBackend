@@ -1,67 +1,39 @@
 package com.verimed.backend.batch.Interface.rest;
 
 import com.verimed.backend.batch.Interface.rest.resources.BatchResource;
-import com.verimed.backend.batch.Interface.rest.resources.CreateBatchResource;
 import com.verimed.backend.batch.Interface.rest.transform.BatchResourceFromEntityAssembler;
-import com.verimed.backend.batch.domain.model.aggregates.Product;
-import com.verimed.backend.batch.domain.model.entities.Batch;
-import com.verimed.backend.batch.domain.model.queries.GetAllBatchesQuery;
-import com.verimed.backend.batch.domain.model.queries.GetBatchByIdQuery;
+import com.verimed.backend.batch.domain.model.commands.CreateBatchCommand;
 import com.verimed.backend.batch.domain.service.BatchCommandService;
 import com.verimed.backend.batch.domain.service.BatchQueryService;
-import com.verimed.backend.batch.infrastructure.persistence.jpa.repository.ProductRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
-@RequestMapping(value = "api/v1/batch", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "api/verimed/batch", produces = MediaType.APPLICATION_JSON_VALUE)
 public class BatchController {
-    /*
     private final BatchCommandService batchCommandService;
     private final BatchQueryService batchQueryService;
-    private final ProductRepository productRepository;
 
-    public BatchController(BatchCommandService batchCommandService, BatchQueryService batchQueryService, ProductRepository productRepository) {
+    public BatchController(BatchCommandService batchCommandService, BatchQueryService batchQueryService) {
         this.batchCommandService = batchCommandService;
         this.batchQueryService = batchQueryService;
-        this.productRepository = productRepository;
     }
 
     @PostMapping
-    public ResponseEntity<BatchResource> createBatch(@RequestBody CreateBatchResource createBatchResource) {
-        Optional<Batch> batchSource = batchCommandService.handle(CreateBatchCommandFromResourceAssembler.toCommand(createBatchResource));
-        return batchSource.map(s -> {
-          List<Product> productSource = productRepository.findAllByBatchCode(s.getCode());
-          return new ResponseEntity<>(BatchResourceFromEntityAssembler
-                  .toResourceFromEntity(s, productSource), HttpStatus.CREATED);
-        }).orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
+    public ResponseEntity<Void> createBatch(@RequestBody CreateBatchCommand command) {
+        batchCommandService.handle(command);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping
-    public ResponseEntity<List<BatchResource>> getAllBatches() {
-        List<Batch> batchSource = batchQueryService.handle(new GetAllBatchesQuery());
-        var batchResources = batchSource
+    public List<BatchResource> getAllBatches() {
+        return batchQueryService.getAllBatches()
                 .stream()
-                .map(batch -> {
-                    List<Product> productSource = productRepository.findAllByBatchCode(batch.getCode());
-                    return BatchResourceFromEntityAssembler.toResourceFromEntity(batch, productSource);
-                })
+                .map(BatchResourceFromEntityAssembler::toResourceFromEntity)
                 .toList();
-        return ResponseEntity.ok(batchResources);
     }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<BatchResource> getBatchById(@PathVariable Long id) {
-        Optional<Batch> batchSource = batchQueryService.handle(new GetBatchByIdQuery(id));
-        return batchSource.map(s -> {
-                    List<Product> products = productRepository.findAllByBatchCode(s.getCode());
-                    return ResponseEntity.ok(BatchResourceFromEntityAssembler.toResourceFromEntity(s, products));
-                })
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }*/
 }
