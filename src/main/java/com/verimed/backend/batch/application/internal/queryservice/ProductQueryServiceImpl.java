@@ -15,6 +15,6 @@ public class ProductQueryServiceImpl implements ProductQueryService {
     }
     @Override
     public List<Product> getProductsByBatch(String batchCode) {
-        return productRepository.finByBatchCode(batchCode);
+        return productRepository.findByBatchCode(batchCode);
     }
 }

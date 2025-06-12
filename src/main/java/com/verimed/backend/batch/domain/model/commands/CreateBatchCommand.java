@@ -1,8 +1,5 @@
 package com.verimed.backend.batch.domain.model.commands;
 
-import java.util.List;
-import java.util.UUID;
-
 public record CreateBatchCommand(
         String hash,
         String certificateUrl

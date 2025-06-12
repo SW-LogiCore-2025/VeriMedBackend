@@ -1,7 +1,6 @@
 package com.verimed.backend.batch.application.internal.queryservice;
 
 import com.verimed.backend.batch.domain.model.entities.Batch;
-import com.verimed.backend.batch.domain.model.queries.GetAllBatchesQuery;
 import com.verimed.backend.batch.domain.service.BatchQueryService;
 import com.verimed.backend.batch.infrastructure.persistence.jpa.repository.BatchRepository;
 import org.springframework.stereotype.Service;

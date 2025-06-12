@@ -19,6 +19,7 @@ import java.util.List;
 public class ProductController {
     private final ProductCommandService productCommandService;
     private final ProductQueryService productQueryService;
+
     public ProductController(ProductCommandService productCommandService, ProductQueryService productQueryService) {
         this.productCommandService = productCommandService;
         this.productQueryService = productQueryService;

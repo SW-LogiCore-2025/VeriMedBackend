@@ -33,7 +33,7 @@ public class BatchController {
     public List<BatchResource> getAllBatches() {
         return batchQueryService.getAllBatches()
                 .stream()
-                .map(BatchResourceFromEntityAssembler::toResourceFromEntity)
+                .map(batch -> new BatchResourceFromEntityAssembler().toResourceFromEntity(batch, null))
                 .toList();
     }
 }
