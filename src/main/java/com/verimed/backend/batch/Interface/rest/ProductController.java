@@ -30,13 +30,13 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity<ProductResource> getAllProducts() {
+    public ResponseEntity<List<ProductResource>> getAllProducts() {
         List<Product> productSource = productQueryService.handle(new GetAllProductsQuery());
         var productResources = productSource
                 .stream()
                 .map(ProductResourceFromEntityAssembler::toResourceFromEntity)
                 .toList();
-        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+        return ResponseEntity.ok(productResources);
     }
 
     @PostMapping
