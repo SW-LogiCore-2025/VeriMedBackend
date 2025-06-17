@@ -20,7 +20,7 @@ public class BackendApplication {
 		String url = "jdbc:mysql://localhost:3306/";
 		String dbName = "verimed_db";
 		String user = "root";
-		String pass = "admin";
+		String pass = "12345678";
 		try (Connection conn = DriverManager.getConnection(url, user, pass);
 			 Statement stmt = conn.createStatement()) {
 			stmt.executeUpdate("CREATE DATABASE IF NOT EXISTS " + dbName);
