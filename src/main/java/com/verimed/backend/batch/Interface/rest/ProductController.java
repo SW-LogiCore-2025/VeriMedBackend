@@ -27,13 +27,13 @@ public class ProductController {
 
     @PostMapping("/batch")
     public ResponseEntity<Void> addProductToBatch(@RequestBody AddProductToBatchCommand resource) {
-       var command = CreateProductCommandFromResourceAssembler.toCommand(resource);
-       productCommandService.handle(command);
-       return ResponseEntity.status(HttpStatus.CREATED).build();
+        var command = CreateProductCommandFromResourceAssembler.toCommand(resource);
+        productCommandService.handle(command);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping
-    public List<ProductResource> getAllProductsByBatch(@RequestBody String code) {
+    public List<ProductResource> getAllProductsByBatch(@RequestParam String code) {
         return productQueryService.getProductsByBatch(code)
                 .stream()
                 .map(ProductResourceFromEntityAssembler::toResourceFromEntity)
