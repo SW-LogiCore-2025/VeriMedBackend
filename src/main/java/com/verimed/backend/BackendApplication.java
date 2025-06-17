@@ -2,6 +2,7 @@ package com.verimed.backend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -9,9 +10,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 @SpringBootApplication
+@EnableJpaAuditing
 public class BackendApplication {
 
-	public static void main(String[] args) {
+/*	public static void main(String[] args) {
 		createDatabaseIfNotExists();
 		SpringApplication.run(BackendApplication.class, args);
 	}
@@ -27,5 +29,9 @@ public class BackendApplication {
 		} catch (SQLException e) {
 			throw new RuntimeException("Error creando la base de datos: " + dbName, e);
 		}
-	}
+	}*/
+	public static void main(String[] args) {
+	SpringApplication.run(BackendApplication.class, args);
+}
+
 }
