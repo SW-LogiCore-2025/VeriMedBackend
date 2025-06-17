@@ -2,8 +2,7 @@ package com.verimed.backend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -11,9 +10,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 @SpringBootApplication
-public class BackendApplication implements WebMvcConfigurer {
+@EnableJpaAuditing
+public class BackendApplication {
 
-	public static void main(String[] args) {
+/*	public static void main(String[] args) {
 		createDatabaseIfNotExists();
 		SpringApplication.run(BackendApplication.class, args);
 	}
@@ -29,14 +29,9 @@ public class BackendApplication implements WebMvcConfigurer {
 		} catch (SQLException e) {
 			throw new RuntimeException("Error creando la base de datos: " + dbName, e);
 		}
-	}
+	}*/
+	public static void main(String[] args) {
+	SpringApplication.run(BackendApplication.class, args);
+}
 
-	@Override
-	public void addCorsMappings(CorsRegistry registry) {
-		registry.addMapping("/**")
-				.allowedOrigins("*") // Permite cualquier origen
-				.allowedMethods("*") // Permite cualquier método HTTP
-				.allowedHeaders("*") // Permite cualquier encabezado
-				.allowCredentials(false); // No requiere credenciales
-	}
 }
