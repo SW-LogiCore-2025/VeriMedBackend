@@ -1,6 +1,6 @@
 package com.verimed.backend.iam.domain.model.commands;
 
-import com.acme.center.platform.iam.domain.model.entities.Role;
+import com.verimed.backend.iam.domain.model.entities.Role;
 
 import java.util.List;
 
