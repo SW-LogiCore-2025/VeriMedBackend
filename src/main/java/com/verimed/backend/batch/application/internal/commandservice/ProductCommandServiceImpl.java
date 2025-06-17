@@ -26,7 +26,7 @@ public class ProductCommandServiceImpl implements ProductCommandService {
     }
 
     @Override
-    public void handle(AddProductToBatchCommand command) {
+    public List<Product> handle(AddProductToBatchCommand command) {
         Optional<Batch> batchOpt = batchRepository.findById(command.batchCode());
         Optional<ProductType> productTypeOpt = productTypeRepository.findById(command.productTypeId());
 
@@ -37,7 +37,6 @@ public class ProductCommandServiceImpl implements ProductCommandService {
         Batch batch = batchOpt.get();
         ProductType productType = productTypeOpt.get();
 
-        //Obtener el serial maximo actual para este lote y tipo de producto
         Long maxSerial = productRepository.findMaxSerialByBatchCodeAndProductTypeId(batch, productType);
         if (maxSerial == null) maxSerial = 0L;
 
@@ -46,9 +45,10 @@ public class ProductCommandServiceImpl implements ProductCommandService {
             Product product = new Product();
             product.setBatch(batch);
             product.setProductType(productType);
-            product.setSerialNumber(maxSerial + i); // Increment serial number
+            product.setSerialNumber(maxSerial + i);
             products.add(product);
         }
         productRepository.saveAll(products);
+        return products;
     }
 }
