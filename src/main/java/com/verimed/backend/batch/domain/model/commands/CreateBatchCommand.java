@@ -1,11 +1,11 @@
 package com.verimed.backend.batch.domain.model.commands;
 
 public record CreateBatchCommand(
-        String hash,
+        String name,
         String certificateUrl
 ) {
     public CreateBatchCommand {
-        if (hash == null || hash.isEmpty()) {
+        if (name == null || name.isEmpty()) {
             throw new IllegalArgumentException("Hash cannot be null or empty");
         }
     }

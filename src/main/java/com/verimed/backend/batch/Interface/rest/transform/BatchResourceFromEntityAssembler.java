@@ -15,7 +15,7 @@ public class BatchResourceFromEntityAssembler {
 
         return new BatchResource(
                 batch.getCode(),
-                batch.getHash(),
+                batch.getName(),
                 batch.getCreatedAt(),
                 productResources,
                 batch.getCertificateUrl()

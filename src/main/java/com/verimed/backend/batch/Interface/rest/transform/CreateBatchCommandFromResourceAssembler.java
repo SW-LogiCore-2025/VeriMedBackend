@@ -13,7 +13,7 @@ public class CreateBatchCommandFromResourceAssembler {
         List<AddProductToBatchCommand> products = resource.products() != null ? resource.products() : Collections.emptyList();
         // Ejemplo: podrías transformar los productos a comandos si tu CreateBatchCommand lo requiere
         return new CreateBatchCommand(
-                resource.hash(),
+                resource.name(),
                 resource.certificateUrl()
         );
     }

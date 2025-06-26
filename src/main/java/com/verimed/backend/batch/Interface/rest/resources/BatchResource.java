@@ -6,7 +6,7 @@ import java.util.UUID;
 
 public record BatchResource(
         String code,
-        String hash,
+        String name,
         LocalDateTime createdAt,
         List<ProductResource> products,
         String certificateUrl
