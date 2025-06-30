@@ -27,7 +27,7 @@ public class Role {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(length = 20)
+    @Column(name = "role_name", nullable = false)
     private Roles name;
 
     public Role(Roles name) {
@@ -47,7 +47,7 @@ public class Role {
      * @return the default role
      */
     public static Role getDefaultRole() {
-        return new Role(Roles.ROLE_USER);
+        return new Role(Roles.ROLE_BUSINESS);
     }
 
     /**

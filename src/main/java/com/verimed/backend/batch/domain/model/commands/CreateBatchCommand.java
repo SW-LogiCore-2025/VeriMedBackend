@@ -11,6 +11,7 @@ public record CreateBatchCommand(
     public CreateBatchCommand {
         if (nameBatch == null || nameBatch.isEmpty()) {
             throw new IllegalArgumentException("nameBatch cannot be null or empty");
+
         }
     }
 
