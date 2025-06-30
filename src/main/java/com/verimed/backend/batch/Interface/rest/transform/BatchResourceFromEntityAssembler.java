@@ -9,6 +9,9 @@ import java.util.List;
 
 public class BatchResourceFromEntityAssembler {
     public static BatchResource toResourceFromEntity(Batch batch, List<Product> products) {
+        if (products == null) {
+            products = java.util.Collections.emptyList();
+        }
         List<ProductResource> productResources = products.stream()
                 .map(ProductResourceFromEntityAssembler::toResourceFromEntity)
                 .toList();
@@ -18,7 +21,9 @@ public class BatchResourceFromEntityAssembler {
                 batch.getName(),
                 batch.getCreatedAt(),
                 productResources,
-                batch.getCertificateUrl()
+                batch.getCertificateUrl(),
+                batch.getNameBatch()
+
         );
     }
 }
