@@ -25,4 +25,7 @@ public class Batch {
 
     @Column(name = "certificateUrl")
     private String certificateUrl;
+
+    @Column(name = "nameBatch")
+    private String nameBatch;
 }

@@ -24,6 +24,7 @@ public class BatchCommandServiceImpl implements BatchCommandService {
         batch.setHash(command.hash());
         batch.setCreatedAt(LocalDateTime.now());
         batch.setCertificateUrl(command.certificateUrl());
+        batch.setNameBatch(command.nameBatch());
         batchRepository.save(batch);
     }
 
