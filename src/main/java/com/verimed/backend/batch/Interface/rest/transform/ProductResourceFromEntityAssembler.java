@@ -11,7 +11,7 @@ public class ProductResourceFromEntityAssembler {
                 product.getDescription(),
                 product.getImage(),
                 product.getSerialNumber(),
-                product.getBatch(),
+                product.getBatch() != null ? product.getBatch().getCode(): null, // Solo el código del batch
                 product.getProductType().getId(),
                 product.getProductType().getName(),
                 product.getProductType().getManufacturer(),
