@@ -10,6 +10,7 @@ public record BatchResource(
         LocalDateTime createdAt,
         List<ProductResource> products,
         String certificateUrl,
-        String nameBatch
+        String nameBatch,
+        Long userId
 ) {
 }

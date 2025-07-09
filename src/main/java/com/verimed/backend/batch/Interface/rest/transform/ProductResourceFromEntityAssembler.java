@@ -13,8 +13,8 @@ public class ProductResourceFromEntityAssembler {
                 product.getSerialNumber(),
                 product.getBatch(),
                 product.getProductType().getId(),
-                product.getProductType().getName(),           // <-- Agregado
-                product.getProductType().getManufacturer(),   // <-- Agregado
+                product.getProductType().getName(),
+                product.getProductType().getManufacturer(),
                 product.getManufactureDate(),
                 product.getExpirationDate(),
                 product.getComposition()
