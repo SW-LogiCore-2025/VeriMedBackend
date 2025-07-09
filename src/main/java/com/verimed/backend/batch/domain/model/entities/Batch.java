@@ -1,5 +1,6 @@
 package com.verimed.backend.batch.domain.model.entities;
 
+import com.verimed.backend.iam.domain.model.aggregates.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -27,4 +28,8 @@ public class Batch {
 
     @Column(name = "nameBatch")
     private String nameBatch;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 }

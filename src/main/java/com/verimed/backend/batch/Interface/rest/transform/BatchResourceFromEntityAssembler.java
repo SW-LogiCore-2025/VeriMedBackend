@@ -16,14 +16,16 @@ public class BatchResourceFromEntityAssembler {
                 .map(ProductResourceFromEntityAssembler::toResourceFromEntity)
                 .toList();
 
+        Long userId = batch.getUser() != null ? batch.getUser().getId() : null;
+
         return new BatchResource(
                 batch.getCode(),
                 batch.getName(),
                 batch.getCreatedAt(),
                 productResources,
                 batch.getCertificateUrl(),
-                batch.getNameBatch()
-
+                batch.getNameBatch(),
+                userId // <-- Agregado aquí
         );
     }
 }

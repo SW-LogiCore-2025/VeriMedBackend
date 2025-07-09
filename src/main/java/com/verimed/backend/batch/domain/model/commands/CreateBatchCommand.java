@@ -6,12 +6,12 @@ import java.security.NoSuchAlgorithmException;
 
 public record CreateBatchCommand(
         String nameBatch,
-        String certificateUrl
+        String certificateUrl,
+        Long userId // <-- necesario para asociar el batch al usuario
 ) {
     public CreateBatchCommand {
         if (nameBatch == null || nameBatch.isEmpty()) {
             throw new IllegalArgumentException("nameBatch cannot be null or empty");
-
         }
     }
 

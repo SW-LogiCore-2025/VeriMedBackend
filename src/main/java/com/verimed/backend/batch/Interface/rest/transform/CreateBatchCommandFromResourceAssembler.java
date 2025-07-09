@@ -7,7 +7,8 @@ public class CreateBatchCommandFromResourceAssembler {
     public static CreateBatchCommand toCommand(CreateBatchResource resource) {
         return new CreateBatchCommand(
                 resource.nameBatch(),
-                resource.certificateUrl()
+                resource.certificateUrl(),
+                resource.userId() // <-- Agregado aquí
         );
     }
 }

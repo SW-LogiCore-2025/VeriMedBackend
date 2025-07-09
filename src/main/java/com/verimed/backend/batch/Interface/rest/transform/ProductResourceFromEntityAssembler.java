@@ -11,8 +11,10 @@ public class ProductResourceFromEntityAssembler {
                 product.getDescription(),
                 product.getImage(),
                 product.getSerialNumber(),
-                product.getBatch(), // Usa el getter directamente
+                product.getBatch(),
                 product.getProductType().getId(),
+                product.getProductType().getName(),
+                product.getProductType().getManufacturer(),
                 product.getManufactureDate(),
                 product.getExpirationDate(),
                 product.getComposition()

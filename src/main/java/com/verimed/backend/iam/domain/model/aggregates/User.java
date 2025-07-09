@@ -1,5 +1,6 @@
 package com.verimed.backend.iam.domain.model.aggregates;
 
+import com.verimed.backend.batch.domain.model.entities.Batch;
 import com.verimed.backend.iam.domain.model.entities.Role;
 import com.verimed.backend.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
 import jakarta.persistence.*;
@@ -37,6 +38,9 @@ public class User extends AuditableAbstractAggregateRoot<User> {
                 joinColumns = @JoinColumn(name = "user_id"),
                 inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
+
+    @OneToMany(mappedBy = "user")
+    private Set<Batch> batches = new HashSet<>();
 
     public User() {
         this.roles = new HashSet<>();

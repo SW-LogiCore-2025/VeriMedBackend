@@ -11,6 +11,8 @@ public record ProductResource(
         Long serialNumber,
         Batch batch,
         Long productTypeId,
+        String productTypeName,      // <-- Agregado
+        String productTypeManufacturer, // <-- Agregado
         LocalDate manufactureDate,
         LocalDate expirationDate,
         String composition

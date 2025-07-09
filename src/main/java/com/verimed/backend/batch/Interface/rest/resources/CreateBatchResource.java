@@ -7,7 +7,8 @@ import java.util.List;
 
 public record CreateBatchResource(
         String nameBatch,
-        String certificateUrl
+        String certificateUrl,
+        Long userId
 ) {
     public CreateBatchResource {
         if (nameBatch == null || nameBatch.isEmpty()) {

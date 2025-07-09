@@ -36,4 +36,12 @@ public class BatchController {
                 .map(batch -> new BatchResourceFromEntityAssembler().toResourceFromEntity(batch, null))
                 .toList();
     }
+
+    @GetMapping("/by-user/{userId}")
+    public List<BatchResource> getBatchesByUserId(@PathVariable Long userId) {
+        return batchQueryService.getBatchesByUserId(userId)
+                .stream()
+                .map(batch -> new BatchResourceFromEntityAssembler().toResourceFromEntity(batch, null))
+                .toList();
+    }
 }

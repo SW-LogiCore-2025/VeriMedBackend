@@ -25,4 +25,9 @@ public class BatchQueryServiceImpl implements BatchQueryService {
     public Optional<Batch> getBatchByCode(String code) {
         return batchRepository.findById(code);
     }
+
+    @Override
+    public List<Batch> getBatchesByUserId(Long userId) {
+        return batchRepository.findByUserId(userId);
+    }
 }
