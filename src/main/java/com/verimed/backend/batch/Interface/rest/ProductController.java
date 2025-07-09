@@ -23,9 +23,9 @@ import java.util.Map;
 public class ProductController {
     private final ProductCommandService productCommandService;
     private final ProductQueryService productQueryService;
-    private final PinataService pinataService;
-    private final ObjectMapper objectMapper;
-    private final BlockchainService blockchainService;
+    //private final PinataService pinataService;
+    //private final ObjectMapper objectMapper;
+    //private final BlockchainService blockchainService;
 
     @Autowired
     public ProductController(ProductCommandService productCommandService,
@@ -35,9 +35,9 @@ public class ProductController {
                              BlockchainService blockchainService) {
         this.productCommandService = productCommandService;
         this.productQueryService = productQueryService;
-        this.pinataService = pinataService;
-        this.objectMapper = objectMapper;
-        this.blockchainService = blockchainService;
+        //this.pinataService = pinataService;
+        //this.objectMapper = objectMapper;
+        //this.blockchainService = blockchainService;
     }
 
 
@@ -49,21 +49,6 @@ public class ProductController {
                 .map(ProductResourceFromEntityAssembler::toResourceFromEntity)
                 .toList();
 
-        for (var productResource : productResources) {
-            Map<String, Object> jsonMap = objectMapper.convertValue(productResource, Map.class);
-            String cid = pinataService.uploadToPinata(jsonMap);
-
-            String tokenURI = "https://gateway.pinata.cloud/ipfs/" + cid;
-            // Ajusta el campo según tu ProductResource, por ejemplo getOwner()
-            String recipient = "0x9aac2971E71499451600c9aB992a4308796D0907"; // Cambia esto si tu campo es diferente
-
-            try {
-                blockchainService.mintNFT(recipient, tokenURI);
-                System.out.println("NFT minteado exitosamente para el CID: " + cid);
-            } catch (Exception e) {
-                System.err.println("Error al mintear NFT: " + e.getMessage());
-            }
-        }
 
         if (productResources.size() == 1) {
             return ResponseEntity.status(HttpStatus.CREATED).body(productResources.get(0));
@@ -75,6 +60,25 @@ public class ProductController {
     @GetMapping
     public List<ProductResource> getAllProductsByBatch(@RequestParam String code) {
         return productQueryService.getProductsByBatch(code)
+                .stream()
+                .map(ProductResourceFromEntityAssembler::toResourceFromEntity)
+                .toList();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductResource> getProductById(@PathVariable Long id) {
+        var productOpt = productQueryService.getProductById(id);
+        if (productOpt.isPresent()) {
+            var resource = ProductResourceFromEntityAssembler.toResourceFromEntity(productOpt.get());
+            return ResponseEntity.ok(resource);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/by-type")
+    public List<ProductResource> getProductsByProductType(@RequestParam Long productTypeId) {
+        return productQueryService.getProductsByProductType(productTypeId)
                 .stream()
                 .map(ProductResourceFromEntityAssembler::toResourceFromEntity)
                 .toList();

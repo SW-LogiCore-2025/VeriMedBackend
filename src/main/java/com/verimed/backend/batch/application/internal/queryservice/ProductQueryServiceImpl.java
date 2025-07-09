@@ -6,6 +6,7 @@ import com.verimed.backend.batch.infrastructure.persistence.jpa.repository.Produ
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductQueryServiceImpl implements ProductQueryService {
@@ -16,5 +17,13 @@ public class ProductQueryServiceImpl implements ProductQueryService {
     @Override
     public List<Product> getProductsByBatch(String batchCode) {
         return productRepository.findByBatchCode(batchCode);
+    }
+    @Override
+    public Optional<Product> getProductById(Long id) {
+        return productRepository.findById(id);
+    }
+    @Override
+    public List<Product> getProductsByProductType(Long productTypeId) {
+        return productRepository.findByProductTypeId(productTypeId);
     }
 }
