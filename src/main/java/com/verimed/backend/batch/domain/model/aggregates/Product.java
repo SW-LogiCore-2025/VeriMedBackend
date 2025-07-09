@@ -46,4 +46,7 @@ public class Product {
 
     @Column(nullable = false, length = 1000)
     private String composition;
+
+    @Column(name = "qr_code_base64", length = 2000)
+    private String qrCodeBase64;
 }

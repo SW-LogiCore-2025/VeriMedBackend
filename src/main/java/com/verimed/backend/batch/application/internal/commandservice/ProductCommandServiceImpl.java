@@ -5,6 +5,7 @@ import com.verimed.backend.batch.domain.model.aggregates.ProductType;
 import com.verimed.backend.batch.domain.model.commands.AddProductToBatchCommand;
 import com.verimed.backend.batch.domain.model.entities.Batch;
 import com.verimed.backend.batch.domain.service.ProductCommandService;
+import com.verimed.backend.batch.domain.service.QrCodeService;
 import com.verimed.backend.batch.infrastructure.persistence.jpa.repository.BatchRepository;
 import com.verimed.backend.batch.infrastructure.persistence.jpa.repository.ProductRepository;
 import com.verimed.backend.batch.infrastructure.persistence.jpa.repository.ProductTypeRepository;
@@ -20,11 +21,13 @@ public class ProductCommandServiceImpl implements ProductCommandService {
     private final ProductRepository productRepository;
     private final BatchRepository batchRepository;
     private final ProductTypeRepository productTypeRepository;
+    private final QrCodeService qrCodeService; // Inyecta el servicio
 
-    public ProductCommandServiceImpl(ProductRepository productRepository, BatchRepository batchRepository, ProductTypeRepository productTypeRepository) {
+    public ProductCommandServiceImpl(ProductRepository productRepository, BatchRepository batchRepository, ProductTypeRepository productTypeRepository, QrCodeService qrCodeService) {
         this.productRepository = productRepository;
         this.batchRepository = batchRepository;
         this.productTypeRepository = productTypeRepository;
+        this.qrCodeService = qrCodeService;
     }
 
     @Override
@@ -51,6 +54,15 @@ public class ProductCommandServiceImpl implements ProductCommandService {
             product.setManufactureDate(LocalDate.now());
             product.setExpirationDate(LocalDate.now().plusYears(1));
             product.setComposition(command.composition());
+
+            // Genera y asigna el QR
+            String qrData = "http://localhost:8080/api/verimed/product/by-serial/" + product.getSerialNumber();
+            try {
+                product.setQrCodeBase64(qrCodeService.generateQrCodeBase64(qrData));
+            } catch (Exception e) {
+                throw new RuntimeException("Error generando el QR", e);
+            }
+
             products.add(product);
         }
         productRepository.saveAll(products);

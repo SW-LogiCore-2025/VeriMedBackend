@@ -26,4 +26,8 @@ public class ProductQueryServiceImpl implements ProductQueryService {
     public List<Product> getProductsByProductType(Long productTypeId) {
         return productRepository.findByProductTypeId(productTypeId);
     }
+    @Override
+    public Optional<Product> getProductBySerialNumber(String serialNumber) {
+        return productRepository.findBySerialNumber(serialNumber);
+    }
 }

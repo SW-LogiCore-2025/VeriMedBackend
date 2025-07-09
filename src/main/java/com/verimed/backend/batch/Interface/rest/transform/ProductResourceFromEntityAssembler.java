@@ -17,7 +17,8 @@ public class ProductResourceFromEntityAssembler {
                 product.getProductType().getManufacturer(),
                 product.getManufactureDate(),
                 product.getExpirationDate(),
-                product.getComposition()
+                product.getComposition(),
+                product.getQrCodeBase64()
         );
     }
 }

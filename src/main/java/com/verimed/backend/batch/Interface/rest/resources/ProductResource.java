@@ -14,6 +14,7 @@ public record ProductResource(
         String productTypeManufacturer,
         LocalDate manufactureDate,
         LocalDate expirationDate,
-        String composition
+        String composition,
+        String qrCodeBase64
 ) {
 }

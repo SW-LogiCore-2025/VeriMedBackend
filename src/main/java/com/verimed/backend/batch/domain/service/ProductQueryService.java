@@ -9,4 +9,7 @@ public interface ProductQueryService {
     List<Product> getProductsByBatch(String batchCode);
     Optional<Product> getProductById(Long id);
     List<Product> getProductsByProductType(Long productTypeId);
+    Optional<Product> getProductBySerialNumber(String serialNumber);
+
+
 }

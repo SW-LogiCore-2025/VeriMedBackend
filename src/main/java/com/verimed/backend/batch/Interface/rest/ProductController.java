@@ -7,6 +7,7 @@ import com.verimed.backend.batch.Interface.rest.transform.ProductResourceFromEnt
 import com.verimed.backend.batch.domain.model.commands.AddProductToBatchCommand;
 import com.verimed.backend.batch.domain.service.ProductCommandService;
 import com.verimed.backend.batch.domain.service.ProductQueryService;
+import com.verimed.backend.batch.domain.service.QrCodeService;
 import com.verimed.backend.blockchain.BlockchainService;
 import com.verimed.backend.blockchain.PinataService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ import java.util.Map;
 public class ProductController {
     private final ProductCommandService productCommandService;
     private final ProductQueryService productQueryService;
+    private final QrCodeService qrCodeService;
     //private final PinataService pinataService;
     //private final ObjectMapper objectMapper;
     //private final BlockchainService blockchainService;
@@ -32,9 +34,11 @@ public class ProductController {
                              ProductQueryService productQueryService,
                              PinataService pinataService,
                              ObjectMapper objectMapper,
-                             BlockchainService blockchainService) {
+                             BlockchainService blockchainService,
+                             QrCodeService qrCodeService) {
         this.productCommandService = productCommandService;
         this.productQueryService = productQueryService;
+        this.qrCodeService = qrCodeService;
         //this.pinataService = pinataService;
         //this.objectMapper = objectMapper;
         //this.blockchainService = blockchainService;
@@ -82,5 +86,35 @@ public class ProductController {
                 .stream()
                 .map(ProductResourceFromEntityAssembler::toResourceFromEntity)
                 .toList();
+    }
+
+    @GetMapping("/by-serial/{serialNumber}")
+    public ResponseEntity<ProductResource> getProductBySerialNumber(@PathVariable String serialNumber) {
+        var productOpt = productQueryService.getProductBySerialNumber(serialNumber);
+        if (productOpt.isPresent()) {
+            var resource = ProductResourceFromEntityAssembler.toResourceFromEntity(productOpt.get());
+            return ResponseEntity.ok(resource);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @PostMapping("/by-qr")
+    public ResponseEntity<ProductResource> getProductByQr(@RequestBody String qrBase64) {
+        try {
+            // Decodifica el QR y extrae el serial
+            String qrData = qrCodeService.decodeQrCodeBase64(qrBase64);
+            // Extrae el serial del QR (asumiendo que la URL termina con el serial)
+            String serialNumber = qrData.substring(qrData.lastIndexOf("/") + 1);
+            var productOpt = productQueryService.getProductBySerialNumber(serialNumber);
+            if (productOpt.isPresent()) {
+                var resource = ProductResourceFromEntityAssembler.toResourceFromEntity(productOpt.get());
+                return ResponseEntity.ok(resource);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 }
