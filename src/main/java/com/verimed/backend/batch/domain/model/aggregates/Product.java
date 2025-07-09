@@ -18,8 +18,8 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name="serial_number", nullable = false)
-    private Long serialNumber;
+    @Column(name = "serial_number", nullable = false, length = 9)
+    private String serialNumber;
 
     @ManyToOne
     @JoinColumn(name = "batch_code", referencedColumnName = "code", nullable = false)

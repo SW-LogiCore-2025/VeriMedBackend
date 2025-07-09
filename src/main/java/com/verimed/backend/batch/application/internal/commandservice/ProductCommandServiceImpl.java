@@ -10,6 +10,7 @@ import com.verimed.backend.batch.infrastructure.persistence.jpa.repository.Produ
 import com.verimed.backend.batch.infrastructure.persistence.jpa.repository.ProductTypeRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +20,7 @@ public class ProductCommandServiceImpl implements ProductCommandService {
     private final ProductRepository productRepository;
     private final BatchRepository batchRepository;
     private final ProductTypeRepository productTypeRepository;
+
     public ProductCommandServiceImpl(ProductRepository productRepository, BatchRepository batchRepository, ProductTypeRepository productTypeRepository) {
         this.productRepository = productRepository;
         this.batchRepository = batchRepository;
@@ -37,24 +39,32 @@ public class ProductCommandServiceImpl implements ProductCommandService {
         Batch batch = batchOpt.get();
         ProductType productType = productTypeOpt.get();
 
-        Long maxSerial = productRepository.findMaxSerialByBatchCodeAndProductTypeId(batch, productType);
-        if (maxSerial == null) maxSerial = 0L;
-
         List<Product> products = new ArrayList<>();
         for (int i = 0; i < command.quantity(); i++) {
             Product product = new Product();
             product.setBatch(batch);
             product.setProductType(productType);
-            product.setSerialNumber(maxSerial + i);
+            product.setSerialNumber(generarNumeroSerieAlfanumerico());
             product.setName(command.name());
             product.setDescription(command.description());
             product.setImage(command.image());
-            product.setManufactureDate(command.manufactureDate());
-            product.setExpirationDate(command.expirationDate());
+            product.setManufactureDate(LocalDate.now());
+            product.setExpirationDate(LocalDate.now().plusYears(1));
             product.setComposition(command.composition());
             products.add(product);
         }
         productRepository.saveAll(products);
         return products;
+    }
+
+    private String generarNumeroSerieAlfanumerico() {
+        String caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        StringBuilder sb = new StringBuilder(9);
+        java.util.Random random = new java.util.Random();
+        for (int i = 0; i < 9; i++) {
+            int index = random.nextInt(caracteres.length());
+            sb.append(caracteres.charAt(index));
+        }
+        return sb.toString();
     }
 }

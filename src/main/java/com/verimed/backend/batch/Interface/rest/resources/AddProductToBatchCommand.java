@@ -2,6 +2,7 @@ package com.verimed.backend.batch.Interface.rest.resources;
 
 import java.time.LocalDate;
 
+
 public record AddProductToBatchCommand(
         String batchCode,
         Long productTypeId,
@@ -9,8 +10,6 @@ public record AddProductToBatchCommand(
         String name,
         String description,
         String image,
-        LocalDate manufactureDate,
-        LocalDate expirationDate,
         String composition
 ) {
     public AddProductToBatchCommand {
@@ -28,12 +27,6 @@ public record AddProductToBatchCommand(
         }
         if (description == null || description.isBlank()) {
             throw new IllegalArgumentException("Description cannot be null or empty");
-        }
-        if (manufactureDate == null) {
-            throw new IllegalArgumentException("Manufacture date cannot be null");
-        }
-        if (expirationDate == null) {
-            throw new IllegalArgumentException("Expiration date cannot be null");
         }
         if (composition == null || composition.isBlank()) {
             throw new IllegalArgumentException("Composition cannot be null or empty");
