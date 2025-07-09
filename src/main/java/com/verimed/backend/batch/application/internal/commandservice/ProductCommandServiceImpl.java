@@ -46,6 +46,12 @@ public class ProductCommandServiceImpl implements ProductCommandService {
             product.setBatch(batch);
             product.setProductType(productType);
             product.setSerialNumber(maxSerial + i);
+            product.setName(command.name());
+            product.setDescription(command.description());
+            product.setImage(command.image());
+            product.setManufactureDate(command.manufactureDate());
+            product.setExpirationDate(command.expirationDate());
+            product.setComposition(command.composition());
             products.add(product);
         }
         productRepository.saveAll(products);

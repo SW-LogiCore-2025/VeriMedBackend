@@ -8,7 +8,14 @@ public class CreateProductCommandFromResourceAssembler {
         return new AddProductToBatchCommand(
                 resource.batchCode(),
                 resource.productTypeId(),
-                resource.quantity()
+                resource.quantity(),
+                resource.name(),
+                resource.description(),
+                resource.image(),
+                resource.manufactureDate(),
+                resource.expirationDate(),
+                resource.composition()
+
         );
     }
 }

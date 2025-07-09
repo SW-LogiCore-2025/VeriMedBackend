@@ -7,9 +7,15 @@ public class ProductResourceFromEntityAssembler {
     public static ProductResource toResourceFromEntity(Product product) {
         return new ProductResource(
                 product.getId(),
-                product.getProductType().getName(),
-                product.getBatch(),
-                product.getProductType().getManufacturer()
+                product.getName(),
+                product.getDescription(),
+                product.getImage(),
+                product.getSerialNumber(),
+                product.getBatch(), // Usa el getter directamente
+                product.getProductType().getId(),
+                product.getManufactureDate(),
+                product.getExpirationDate(),
+                product.getComposition()
         );
     }
 }

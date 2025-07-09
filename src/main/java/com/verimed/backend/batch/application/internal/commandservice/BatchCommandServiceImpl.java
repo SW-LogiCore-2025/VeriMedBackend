@@ -21,7 +21,7 @@ public class BatchCommandServiceImpl implements BatchCommandService {
     public void handle(CreateBatchCommand command) {
         Batch batch = new Batch();
         batch.setCode(generateShortUUID());
-        batch.setName(command.name());
+        batch.setName(command.nameBatch());
         batch.setCreatedAt(LocalDateTime.now());
         batch.setCertificateUrl(command.certificateUrl());
         batch.setNameBatch(command.nameBatch());

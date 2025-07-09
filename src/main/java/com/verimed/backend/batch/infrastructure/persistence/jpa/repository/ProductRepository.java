@@ -13,4 +13,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
    List<Product> findByBatchCode(String batchCode);
     @Query("SELECT MAX(p.serialNumber) FROM Product p WHERE p.batch = :batch AND p.productType = :productType")
     Long findMaxSerialByBatchCodeAndProductTypeId(@Param("batch") Batch batch, @Param("productType") ProductType productType);
+
+    List<Product> findByProductTypeId(Long productTypeId);
 }
