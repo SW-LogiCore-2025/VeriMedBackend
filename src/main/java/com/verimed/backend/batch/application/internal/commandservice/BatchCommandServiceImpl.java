@@ -22,7 +22,7 @@ public class BatchCommandServiceImpl implements BatchCommandService {
     }
 
     @Override
-    public void handle(CreateBatchCommand command) {
+    public Batch handle(CreateBatchCommand command) {
         User user = userRepository.findById(command.userId())
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
         Batch batch = new Batch();
@@ -31,8 +31,8 @@ public class BatchCommandServiceImpl implements BatchCommandService {
         batch.setCreatedAt(LocalDateTime.now());
         batch.setCertificateUrl(command.certificateUrl());
         batch.setNameBatch(command.nameBatch());
-        batch.setUser(user); // Asocia el usuario al batch
-        batchRepository.save(batch);
+        batch.setUser(user);
+        return batchRepository.save(batch);
     }
 
     private String generateShortUUID() {

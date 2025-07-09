@@ -24,9 +24,10 @@ public class BatchController {
     }
 
     @PostMapping
-    public ResponseEntity<Void> createBatch(@RequestBody CreateBatchCommand command) {
-        batchCommandService.handle(command);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
+    public ResponseEntity<BatchResource> createBatch(@RequestBody CreateBatchCommand command) {
+        var batch = batchCommandService.handle(command);
+        var resource = new BatchResourceFromEntityAssembler().toResourceFromEntity(batch, null);
+        return ResponseEntity.status(HttpStatus.CREATED).body(resource);
     }
 
     @GetMapping

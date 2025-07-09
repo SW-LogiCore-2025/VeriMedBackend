@@ -1,7 +1,8 @@
 package com.verimed.backend.batch.domain.service;
 
 import com.verimed.backend.batch.domain.model.commands.CreateBatchCommand;
+import com.verimed.backend.batch.domain.model.entities.Batch;
 
 public interface BatchCommandService {
-    void handle(CreateBatchCommand command);
+    Batch handle(CreateBatchCommand command);
 }
