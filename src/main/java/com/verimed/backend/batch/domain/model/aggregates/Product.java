@@ -35,7 +35,7 @@ public class Product {
     @Column(nullable = false, length = 1000)
     private String description;
 
-    @Column
+    @Column(name = "image", columnDefinition = "TEXT")
     private String image;
 
     @Column(name = "manufacture_date", nullable = false)

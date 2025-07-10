@@ -25,9 +25,9 @@ public class ProductController {
     private final ProductCommandService productCommandService;
     private final ProductQueryService productQueryService;
     private final QrCodeService qrCodeService;
-    //private final PinataService pinataService;
-    //private final ObjectMapper objectMapper;
-    //private final BlockchainService blockchainService;
+    private final PinataService pinataService;
+    private final ObjectMapper objectMapper;
+    private final BlockchainService blockchainService;
 
     @Autowired
     public ProductController(ProductCommandService productCommandService,
@@ -39,9 +39,9 @@ public class ProductController {
         this.productCommandService = productCommandService;
         this.productQueryService = productQueryService;
         this.qrCodeService = qrCodeService;
-        //this.pinataService = pinataService;
-        //this.objectMapper = objectMapper;
-        //this.blockchainService = blockchainService;
+        this.pinataService = pinataService;
+        this.objectMapper = objectMapper;
+        this.blockchainService = blockchainService;
     }
 
 
@@ -52,6 +52,22 @@ public class ProductController {
         var productResources = products.stream()
                 .map(ProductResourceFromEntityAssembler::toResourceFromEntity)
                 .toList();
+
+        for (var productResource : productResources) {
+            Map<String, Object> jsonMap = objectMapper.convertValue(productResource, Map.class);
+            String cid = pinataService.uploadToPinata(jsonMap);
+
+            String tokenURI = "https://gateway.pinata.cloud/ipfs/" + cid;
+            // Ajusta el campo según tu ProductResource, por ejemplo getOwner()
+            String recipient = "0x9aac2971E71499451600c9aB992a4308796D0907"; // Cambia esto si tu campo es diferente
+
+            try {
+                blockchainService.mintNFT(recipient, tokenURI);
+                System.out.println("NFT minteado exitosamente para el CID: " + cid);
+            } catch (Exception e) {
+                System.err.println("Error al mintear NFT: " + e.getMessage());
+            }
+        }
 
 
         if (productResources.size() == 1) {
